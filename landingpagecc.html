@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Composed Conquest | Conquer Everything. Quietly.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C5A059; /* Mid-tone gold from your logo */
+      --bright-gold: #F3E0AD; /* Highlight gold */
+      --dark-bg: #0A0C10; /* Deep charcoal/black from the edges */
+      --center-bg: #161B22; /* Lighter center for the spotlight effect */
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      /* This creates the 'Spotlight' effect seen in your logo background */
+      background: radial-gradient(circle, var(--center-bg) 0%, var(--dark-bg) 100%);
+      color: var(--gold);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    .logo {
+      max-width: 280px;
+      height: auto;
+      margin-bottom: 10px;
+      /* Subtle drop shadow to make the logo pop against the dark bg */
+      filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.5));
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      letter-spacing: 4px;
+      margin: 10px 0;
+      text-transform: uppercase;
+      color: var(--bright-gold);
+    }
+
+    .tagline {
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      opacity: 0.8;
+    }
+
+    .divider {
+      width: 150px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 20px 0 40px 0;
+    }
+
+    section {
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .link-card {
+      display: block;
+      margin: 12px 0;
+      padding: 16px;
+      color: var(--bright-gold);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      border-radius: 2px; /* Sharper corners for a more 'premium' feel */
+      text-decoration: none;
+      transition: all 0.4s ease;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(5px);
+    }
+
+    .link-card:hover {
+  border-color: var(--bright-gold);
+  background: rgba(197, 160, 89, 0.15);
+  transform: scale(1.02);
+  text-shadow: 2px 0px 5px var(--gold), -2px 0px 5px #fff;
+  letter-spacing: 3px; /* Slightly expands the text like a UI loading */
+}
+
+    .amazon-section .link-card {
+      border-style: double; /* Makes the Amazon picks stand out slightly */
+      border-width: 3px;
+    }
+
+   footer {
+  margin-top: 80px;
+  padding-top: 20px;
+  /* Use rgba with the same opacity as the corner lines for consistency */
+  border-top: 1px solid rgba(197, 160, 89, 0.1); 
+  width: 100%;
+  max-width: 400px;
+  font-size: 0.75rem;
+  opacity: 0.4;
+  text-transform: uppercase;
+  /* Add this for consistency */
+  transition: border-color 0.4s ease; 
+}
+    #progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+}
+
+#progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--bright-gold));
+  width: 0%;
+  box-shadow: 0 0 10px var(--gold);
+}
+/* Only hide the default arrow on screens with a mouse (Desktop) */
+@media (pointer: fine) {
+  html, body {
+    cursor: none !important;
+  }
+
+  /* Ensure the arrow stays hidden even when hovering over links/buttons */
+  a, button, .link-card {
+    cursor: none !important;
+  }
+}
+    
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/2.12.0/tsparticles.bundle.min.js"></script>
+<style>
+  #tsparticles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Keeps them behind your text/buttons */
+  }
+.hud-frame {
+  position: relative;
+  padding: 30px;
+  border: 1px solid rgba(197, 160, 89, 0.1);
+  transition: all 0.4s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* The L-Shaped Brackets */
+.hud-frame::before, .hud-frame::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border: 2px solid var(--gold);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+/* Top-Left Bracket */
+.hud-frame::before {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+}
+
+/* Bottom-Right Bracket */
+.hud-frame::after {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Individual Glow States */
+.glow-border {
+  border-color: rgba(197, 160, 89, 0.5) !important;
+  box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.05);
+}
+
+.glow-bracket::before, .glow-bracket::after {
+  border-color: var(--bright-gold) !important;
+  filter: drop-shadow(0 0 8px var(--gold));
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(197, 160, 89, 0.1);
+  width: 100%;
+  max-width: 400px;
+  transition: all 0.4s ease;
+}
+
+.glow-footer {
+  border-top-color: var(--gold) !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 5px var(--gold));
+}
+
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--bright-gold);
+  border-radius: 50%;
+  pointer-events: none; /* Crucial: lets you click the buttons underneath! */
+  z-index: 99999;
+  transition: transform 0.1s ease-out, width 0.2s, height 0.2s;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The "Center Dot" of the reticle */
+#custom-cursor::after {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background: var(--bright-gold);
+  border-radius: 50%;
+}
+
+/* Reactivity: When hovering over a link, the reticle expands */
+.cursor-grow {
+  width: 50px !important;
+  height: 50px !important;
+  background: rgba(197, 160, 89, 0.1);
+  border-style: dashed !important;
+}
+</style>
+</head>
+<body>
+  <div id="progress-container"><div id="progress-bar"></div></div>
+  <div id="custom-cursor"></div>
+  <div id="tsparticles"></div>
+
+  <div id="main-content" style="opacity: 0; transition: opacity 1.5s ease-in; display: flex; flex-direction: column; align-items: center;">
+    
+    <img src="logo.png" alt="Composed Conquest Logo" class="logo">
+    
+    <h1>Composed Conquest</h1>
+    <p class="tagline">Conquer Everything. Quietly.</p>
+    
+    <div class="divider"></div>
+
+    <div class="hud-frame">
+      <section>
+        <h2>Connect</h2>
+        <a href="https://www.instagram.com/composedconquest" class="link-card" target="_blank">Instagram</a>
+        <a href="https://www.threads.net/@composedconquest" class="link-card" target="_blank">Threads</a>
+        <a href="https://www.tiktok.com/@composedconquest" class="link-card" target="_blank">TikTok</a>
+      </section>
+
+      <section class="amazon-section">
+        <h2>The Arsenal</h2>
+        <p style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.7;">Curated tools for the quiet climb.</p>
+        <a href="https://www.amazon.com/dp/B00AQL8VU4" class="link-card" target="_blank">Essential Productivity Gear</a>
+        <a href="#" class="link-card" target="_blank">Top Tech Recommendations</a>
+      </section>
+    </div>
+
+    <footer>
+      &copy; 2026 COMPOSED CONQUEST | <span style="font-size: 0.7rem;">As an Amazon Associate, I earn from qualifying purchases.</span>
+    </footer>
+  </div>
+
+  <script>
+    // FADE IN ON LOAD
+    window.addEventListener('load', () => {
+      document.getElementById('main-content').style.opacity = '1';
+    });
+
+    // PARTICLES CONFIG
+    tsParticles.load("tsparticles", {
+      particles: {
+        number: { value: 60, density: { enable: true, area: 800 } },
+        color: { value: "#C5A059" },
+        shape: { type: "circle" },
+        opacity: { value: { min: 0.1, max: 0.4 } },
+        size: { value: { min: 1, max: 2 } },
+        move: { enable: true, speed: 0.8, direction: "none", random: true, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: { onHover: { enable: true, mode: "grab" }, onClick: { enable: true, mode: "push" } },
+        modes: { grab: { distance: 200, links: { opacity: 0.2, color: "#C5A059" } } }
+      }
+    });
+
+    // PROGRESS BAR LOGIC
+    window.onscroll = function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress-bar").style.width = scrolled + "%";
+    };
+
+    // CUSTOM CURSOR LOGIC
+    const cursor = document.getElementById("custom-cursor");
+    const links = document.querySelectorAll("a");
+
+    document.addEventListener("mousemove", (e) => {
+      cursor.style.left = e.clientX + "px";
+      cursor.style.top = e.clientY + "px";
+    });
+
+    links.forEach(link => {
+      link.addEventListener("mouseenter", () => cursor.classList.add("cursor-grow"));
+      link.addEventListener("mouseleave", () => cursor.classList.remove("cursor-grow"));
+    });
+
+    document.addEventListener("mouseleave", () => { cursor.style.opacity = "0"; });
+    document.addEventListener("mouseenter", () => { cursor.style.opacity = "1"; });
+   // --- HUD FRAME BORDER PROXIMITY GLOW ---
+
+const hud = document.querySelector('.hud-frame');
+const footer = document.querySelector('footer');
+
+document.addEventListener("mousemove", (e) => {
+  const hRect = hud.getBoundingClientRect();
+  const fRect = footer.getBoundingClientRect();
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+
+  // 1. Logic for Main Frame Border
+  const distToHud = Math.min(
+    Math.abs(mouseY - hRect.top),
+    Math.abs(mouseY - hRect.bottom),
+    Math.abs(mouseX - hRect.left),
+    Math.abs(mouseX - hRect.right)
+  );
+
+  if (distToHud < 100) {
+    hud.classList.add('glow-border');
+  } else {
+    hud.classList.remove('glow-border');
+  }
+
+  // 2. Logic for Brackets (Glow when near top-left or bottom-right)
+  const distToTopLeft = Math.hypot(mouseX - hRect.left, mouseY - hRect.top);
+  const distToBottomRight = Math.hypot(mouseX - hRect.right, mouseY - hRect.bottom);
+
+  if (distToTopLeft < 120 || distToBottomRight < 120) {
+    hud.classList.add('glow-bracket');
+  } else {
+    hud.classList.remove('glow-bracket');
+  }
+
+  // 3. Logic for Footer Line
+  const distToFooter = Math.abs(mouseY - fRect.top);
+  // Only glow if mouse is horizontally aligned with footer and close vertically
+  if (distToFooter < 80 && mouseX > fRect.left && mouseX < fRect.right) {
+    footer.classList.add('glow-footer');
+  } else {
+    footer.classList.remove('glow-footer');
+  }
+});
+  </script>
+</body>
+</html>
