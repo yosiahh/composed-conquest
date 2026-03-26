@@ -173,6 +173,57 @@
         font-size: 0.9rem; /* Make buttons easier to tap with thumbs */
     }
 }
+@media (max-width: 1024px) {
+    #custom-cursor {
+        display: none !important;
+    }
+    html, body, a, button {
+        cursor: auto !important; /* Restore default touch behavior */
+    }
+}
+#conduit-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0; 
+  height: 0; 
+  pointer-events: none; /* Crucial: lets you click the buttons! */
+  z-index: 99999;
+  transform: translate(-50%, -50%) rotate(-30deg); /* Arrow angle */
+  
+  /* --- The Gamey Arrowhead (Surgical Borders) --- */
+  border-left: 10px solid transparent;
+  border-bottom: 20px solid var(--gold); /* Your Dark Gold */
+  border-right: 10px solid transparent;
+  
+  /* --- Initial Glow (Absorption Mode) --- */
+  filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.6));
+  transition: all 0.1s ease-out, filter 0.3s ease, transform 0.1s ease-out;
+}
+
+/* --- OVERCHARGE STATE (When user clicks/holds) --- */
+.cursor-overcharge {
+  border-bottom-color: var(--bright-gold) !important; /* Glows to Bright Gold */
+  filter: drop-shadow(0 0 15px var(--gold)) drop-shadow(0 0 25px var(--bright-gold)) !important;
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.3) !important; /* Scale up slightly */
+  
+  /* Dynamic Pulsing Animation */
+  animation: overchargePulse 1.5s infinite;
+}
+
+/* Pulsing overcharge animation */
+@keyframes overchargePulse {
+  0% { filter: drop-shadow(0 0 15px var(--gold)); }
+  50% { filter: drop-shadow(0 0 30px var(--bright-gold)); }
+  100% { filter: drop-shadow(0 0 15px var(--gold)); }
+}
+
+/* --- Ensure default cursor stays hidden --- */
+@media (pointer: fine) {
+  html, body, a, button {
+    cursor: none !important;
+  }
+}
     
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
@@ -327,6 +378,7 @@ footer {
 <body>
   <div id="progress-container"><div id="progress-bar"></div></div>
   <div id="custom-cursor"></div>
+  <div id="conduit-cursor"></div>
   <div id="tsparticles"></div>
 
   <div id="main-content" style="opacity: 0; transition: opacity 1.5s ease-in; display: flex; flex-direction: column; align-items: center;">
@@ -387,95 +439,78 @@ footer {
 
 
   <script>
-    // FADE IN ON LOAD
+  
+    // 1. FADE IN ON LOAD
     window.addEventListener('load', () => {
       document.getElementById('main-content').style.opacity = '1';
     });
 
-    // PARTICLES CONFIG
+    // 2. CONDUIT CURSOR LOGIC (New Arrowhead + Glow)
+    const conduitCursor = document.getElementById("conduit-cursor");
+    let absorptionTimer; 
+
+    document.addEventListener("mousemove", (e) => {
+      // Updates the position of your new arrow cursor
+      conduitCursor.style.left = e.clientX + "px";
+      conduitCursor.style.top = e.clientY + "px";
+    });
+
+    document.addEventListener("mousedown", () => {
+      clearTimeout(absorptionTimer);
+      // Starts the "Overcharge" timer (1.5 seconds)
+      absorptionTimer = setTimeout(() => {
+        conduitCursor.classList.add("cursor-overcharge");
+      }, 1500); 
+    });
+
+    document.addEventListener("mouseup", () => {
+      clearTimeout(absorptionTimer);
+      conduitCursor.classList.remove("cursor-overcharge");
+    });
+
+    // 3. TSPARTICLES CONFIG (Keep your existing floating particles)
     tsParticles.load("tsparticles", {
       particles: {
-        number: { value: 60, density: { enable: true, area: 800 } },
-        color: { value: "#C5A059" },
+        number: { value: 80, density: { enable: true, area: 800 } },
+        color: { value: "#F3E0AD" },
         shape: { type: "circle" },
-        opacity: { value: { min: 0.1, max: 0.4 } },
-        size: { value: { min: 1, max: 2 } },
-        move: { enable: true, speed: 0.8, direction: "none", random: true, outModes: { default: "out" } }
+        opacity: { value: { min: 0.1, max: 0.6 } },
+        size: { value: { min: 1, max: 3 } },
+        move: {
+          enable: true,
+          speed: 1.5,
+          direction: "none",
+          random: true,
+          outModes: { default: "out" }
+        },
+        links: {
+          enable: true,
+          distance: 100,
+          color: "#C5A059",
+          opacity: 0.2,
+          width: 1
+        }
       },
       interactivity: {
-        events: { onHover: { enable: true, mode: "grab" }, onClick: { enable: true, mode: "push" } },
-        modes: { grab: { distance: 200, links: { opacity: 0.2, color: "#C5A059" } } }
+        events: {
+          onHover: { enable: true, mode: "grab" },
+          onClick: { enable: true, mode: "push" } 
+        },
+        modes: {
+          grab: { distance: 200, links: { opacity: 0.5 } },
+          push: { quantity: 10 }
+        }
       }
     });
 
-    // PROGRESS BAR LOGIC
+    // 4. PROGRESS BAR LOGIC
     window.onscroll = function() {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
       document.getElementById("progress-bar").style.width = scrolled + "%";
     };
-
-    // CUSTOM CURSOR LOGIC
-    const cursor = document.getElementById("custom-cursor");
-    const links = document.querySelectorAll("a");
-
-    document.addEventListener("mousemove", (e) => {
-      cursor.style.left = e.clientX + "px";
-      cursor.style.top = e.clientY + "px";
-    });
-
-    links.forEach(link => {
-      link.addEventListener("mouseenter", () => cursor.classList.add("cursor-grow"));
-      link.addEventListener("mouseleave", () => cursor.classList.remove("cursor-grow"));
-    });
-
-    document.addEventListener("mouseleave", () => { cursor.style.opacity = "0"; });
-    document.addEventListener("mouseenter", () => { cursor.style.opacity = "1"; });
-   // --- HUD FRAME BORDER PROXIMITY GLOW ---
-
-const hud = document.querySelector('.hud-frame');
-const footer = document.querySelector('footer');
-
-document.addEventListener("mousemove", (e) => {
-  const hRect = hud.getBoundingClientRect();
-  const fRect = footer.getBoundingClientRect();
-  const mouseX = e.clientX;
-  const mouseY = e.clientY;
-
-  // 1. Logic for Main Frame Border
-  const distToHud = Math.min(
-    Math.abs(mouseY - hRect.top),
-    Math.abs(mouseY - hRect.bottom),
-    Math.abs(mouseX - hRect.left),
-    Math.abs(mouseX - hRect.right)
-  );
-
-  if (distToHud < 100) {
-    hud.classList.add('glow-border');
-  } else {
-    hud.classList.remove('glow-border');
-  }
-
-  // 2. Logic for Brackets (Glow when near top-left or bottom-right)
-  const distToTopLeft = Math.hypot(mouseX - hRect.left, mouseY - hRect.top);
-  const distToBottomRight = Math.hypot(mouseX - hRect.right, mouseY - hRect.bottom);
-
-  if (distToTopLeft < 120 || distToBottomRight < 120) {
-    hud.classList.add('glow-bracket');
-  } else {
-    hud.classList.remove('glow-bracket');
-  }
-
-  // 3. Logic for Footer Line
-  const distToFooter = Math.abs(mouseY - fRect.top);
-  // Only glow if mouse is horizontally aligned with footer and close vertically
-  if (distToFooter < 80 && mouseX > fRect.left && mouseX < fRect.right) {
-    footer.classList.add('glow-footer');
-  } else {
-    footer.classList.remove('glow-footer');
-  }
-});
+  
   </script>
 </body>
 </html>
