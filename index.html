@@ -147,6 +147,32 @@
     gap: 25px;
     margin-top: 40px;
 }
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 600px) {
+    body {
+        padding: 40px 15px; /* Less padding on small screens */
+    }
+
+    h1 {
+        font-size: 1.6rem; /* Shrink text so it doesn't wrap weirdly */
+        letter-spacing: 2px;
+    }
+
+    .hud-frame, section, footer {
+        max-width: 100%; /* Let the boxes take the full width of the phone */
+        padding: 20px 10px;
+    }
+
+    .gear-grid {
+        grid-template-columns: 1fr; /* Force cards into a single vertical column */
+        gap: 15px;
+    }
+
+    .link-card {
+        padding: 12px;
+        font-size: 0.9rem; /* Make buttons easier to tap with thumbs */
+    }
+}
     
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
