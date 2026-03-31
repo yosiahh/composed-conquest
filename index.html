@@ -1,516 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Composed Conquest | Conquer Everything. Quietly.</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --gold: #C5A059; /* Mid-tone gold from your logo */
-      --bright-gold: #F3E0AD; /* Highlight gold */
-      --dark-bg: #0A0C10; /* Deep charcoal/black from the edges */
-      --center-bg: #161B22; /* Lighter center for the spotlight effect */
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
-      /* This creates the 'Spotlight' effect seen in your logo background */
-      background: radial-gradient(circle, var(--center-bg) 0%, var(--dark-bg) 100%);
-      color: var(--gold);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 60px 20px;
-    }
-
-    .logo {
-      max-width: 280px;
-      height: auto;
-      margin-bottom: 10px;
-      /* Subtle drop shadow to make the logo pop against the dark bg */
-      filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.5));
-    }
-
-    h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 2.2rem;
-      letter-spacing: 4px;
-      margin: 10px 0;
-      text-transform: uppercase;
-      color: var(--bright-gold);
-    }
-
-    .tagline {
-      font-style: italic;
-      font-weight: 300;
-      letter-spacing: 2px;
-      margin-bottom: 30px;
-      opacity: 0.8;
-    }
-
-    .divider {
-      width: 150px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 20px 0 40px 0;
-    }
-
-    section {
-      width: 100%;
-      max-width: 400px;
-      margin-bottom: 40px;
-    }
-
-    h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    .link-card {
-      display: block;
-      margin: 12px 0;
-      padding: 16px;
-      color: var(--bright-gold);
-      border: 1px solid rgba(197, 160, 89, 0.3);
-      border-radius: 2px; /* Sharper corners for a more 'premium' feel */
-      text-decoration: none;
-      transition: all 0.4s ease;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(5px);
-    }
-
-    .link-card:hover {
-  border-color: var(--bright-gold);
-  background: rgba(197, 160, 89, 0.15);
-  transform: scale(1.02);
-  text-shadow: 2px 0px 5px var(--gold), -2px 0px 5px #fff;
-  letter-spacing: 3px; /* Slightly expands the text like a UI loading */
-}
-
-    .amazon-section .link-card {
-      border-style: double; /* Makes the Amazon picks stand out slightly */
-      border-width: 3px;
-    }
-
-   footer {
-  margin-top: 80px;
-  padding-top: 20px;
-  /* Use rgba with the same opacity as the corner lines for consistency */
-  border-top: 1px solid rgba(197, 160, 89, 0.1); 
-  width: 100%;
-  max-width: 400px;
-  font-size: 0.75rem;
-  opacity: 0.4;
-  text-transform: uppercase;
-  /* Add this for consistency */
-  transition: border-color 0.4s ease; 
-}
-    #progress-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  z-index: 1000;
-}
-
-#progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold), var(--bright-gold));
-  width: 0%;
-  box-shadow: 0 0 10px var(--gold);
-}
-/* Only hide the default arrow on screens with a mouse (Desktop) */
-@media (pointer: fine) {
-  html, body {
-    cursor: none !important;
-  }
-
-  /* Ensure the arrow stays hidden even when hovering over links/buttons */
-  a, button, .link-card {
-    cursor: none !important;
-  }
-}
-.gear-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    margin-top: 40px;
-}
-/* --- MOBILE OPTIMIZATION --- */
-@media (max-width: 600px) {
-    body {
-        padding: 40px 15px; /* Less padding on small screens */
-    }
-
-    h1 {
-        font-size: 1.6rem; /* Shrink text so it doesn't wrap weirdly */
-        letter-spacing: 2px;
-    }
-
-    .hud-frame, section, footer {
-        max-width: 100%; /* Let the boxes take the full width of the phone */
-        padding: 20px 10px;
-    }
-
-    .gear-grid {
-        grid-template-columns: 1fr; /* Force cards into a single vertical column */
-        gap: 15px;
-    }
-
-    .link-card {
-        padding: 12px;
-        font-size: 0.9rem; /* Make buttons easier to tap with thumbs */
-    }
-}
-@media (max-width: 1024px) {
-    #custom-cursor {
-        display: none !important;
-    }
-    html, body, a, button {
-        cursor: auto !important; /* Restore default touch behavior */
-    }
-}
-#conduit-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0; 
-  height: 0; 
-  pointer-events: none; /* Crucial: lets you click the buttons! */
-  z-index: 99999;
-  transform: translate(-50%, -50%) rotate(-30deg); /* Arrow angle */
-  
-  /* --- The Gamey Arrowhead (Surgical Borders) --- */
-  border-left: 10px solid transparent;
-  border-bottom: 20px solid var(--gold); /* Your Dark Gold */
-  border-right: 10px solid transparent;
-  
-  /* --- Initial Glow (Absorption Mode) --- */
-  filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.6));
-  transition: all 0.1s ease-out, filter 0.3s ease, transform 0.1s ease-out;
-}
-
-/* --- OVERCHARGE STATE (When user clicks/holds) --- */
-.cursor-overcharge {
-  border-bottom-color: var(--bright-gold) !important; /* Glows to Bright Gold */
-  filter: drop-shadow(0 0 15px var(--gold)) drop-shadow(0 0 25px var(--bright-gold)) !important;
-  transform: translate(-50%, -50%) rotate(45deg) scale(1.3) !important; /* Scale up slightly */
-  
-  /* Dynamic Pulsing Animation */
-  animation: overchargePulse 1.5s infinite;
-}
-
-/* Pulsing overcharge animation */
-@keyframes overchargePulse {
-  0% { filter: drop-shadow(0 0 15px var(--gold)); }
-  50% { filter: drop-shadow(0 0 30px var(--bright-gold)); }
-  100% { filter: drop-shadow(0 0 15px var(--gold)); }
-}
-
-/* --- Ensure default cursor stays hidden --- */
-@media (pointer: fine) {
-  html, body, a, button {
-    cursor: none !important;
-  }
-}
-    
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/2.12.0/tsparticles.bundle.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComposedConquest</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  #tsparticles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Keeps them behind your text/buttons */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-dim: #8a6e2f;
+    --gold-glow: rgba(201,168,76,0.12);
+    --bg: #0c0c0b;
+    --bg2: #111110;
+    --bg3: #161614;
+    --text: #e8e2d6;
+    --text-dim: #7a7368;
+    --text-mid: #b0a99e;
+    --border: rgba(201,168,76,0.15);
+    --border-dim: rgba(255,255,255,0.05);
   }
-.hud-frame {
-  position: relative;
-  padding: 30px;
-  border: 1px solid rgba(197, 160, 89, 0.1);
-  transition: all 0.4s ease;
-  width: 100%;
-  max-width: 400px;
-}
 
-/* The L-Shaped Brackets */
-.hud-frame::before, .hud-frame::after {
-  content: "";
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  border: 2px solid var(--gold);
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-/* Top-Left Bracket */
-.hud-frame::before {
-  top: -2px;
-  left: -2px;
-  border-right: none;
-  border-bottom: none;
-}
+  a { text-decoration: none; color: inherit; }
 
-/* Bottom-Right Bracket */
-.hud-frame::after {
-  bottom: -2px;
-  right: -2px;
-  border-left: none;
-  border-top: none;
-}
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid var(--border-dim);
+    background: rgba(12,12,11,0.85);
+    backdrop-filter: blur(12px);
+  }
 
-/* Individual Glow States */
-.glow-border {
-  border-color: rgba(197, 160, 89, 0.5) !important;
-  box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.05);
-}
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
 
-.glow-bracket::before, .glow-bracket::after {
-  border-color: var(--bright-gold) !important;
-  filter: drop-shadow(0 0 8px var(--gold));
-}
+  .logo span {
+    color: var(--text-dim);
+    font-style: italic;
+  }
 
-footer {
-  margin-top: 80px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(197, 160, 89, 0.1);
-  width: 100%;
-  max-width: 400px;
-  transition: all 0.4s ease;
-}
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+  }
 
-.glow-footer {
-  border-top-color: var(--gold) !important;
-  opacity: 1 !important;
-  filter: drop-shadow(0 0 5px var(--gold));
-}
+  nav ul li a {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    transition: color 0.3s;
+  }
 
-#custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  border: 1.5px solid var(--bright-gold);
-  border-radius: 50%;
-  pointer-events: none; /* Crucial: lets you click the buttons underneath! */
-  z-index: 99999;
-  transition: transform 0.1s ease-out, width 0.2s, height 0.2s;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  nav ul li a:hover { color: var(--gold); }
 
-/* The "Center Dot" of the reticle */
-#custom-cursor::after {
-  content: "";
-  width: 4px;
-  height: 4px;
-  background: var(--bright-gold);
-  border-radius: 50%;
-}
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
 
-/* Reactivity: When hovering over a link, the reticle expands */
-.cursor-grow {
-  width: 50px !important;
-  height: 50px !important;
-  background: rgba(197, 160, 89, 0.1);
-  border-style: dashed !important;
-}
-.gear-card {
-    /* 0.85 opacity lets the background "breathe" through the box */
-    background: rgba(15, 17, 22, 0.85); 
-    
-    /* A very thin, subtle border to define the shape */
-    border: 1px solid rgba(197, 160, 89, 0.3); 
-    
-    padding: 25px;
-    margin: 20px 0;
-    border-radius: 4px;
-    
-    /* This makes the background blur slightly (Modern UI trick) */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
-.gear-card:hover {
-    background: rgba(20, 23, 30, 0.95); /* Gets slightly darker/solid on hover */
-    border-color: #F3E0AD;               /* Border glows bright gold */
-    box-shadow: 0 0 25px rgba(243, 224, 173, 0.2);
-    transform: scale(1.02);              /* Subtle "pop" forward */
-}
-.buy-btn {
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    max-width: 700px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    max-width: 380px;
+    line-height: 1.9;
+    margin-bottom: 3.5rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 0.9rem 2.2rem;
+    background: var(--gold);
+    color: var(--bg);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s;
     display: inline-block;
-    margin-top: 15px;
-    padding: 8px 20px;
-    color: #F3E0AD;
-    text-decoration: none;
-    border: 1px solid #F3E0AD;
-    font-weight: bold;
-    letter-spacing: 1px;
-    transition: background 0.3s;
-}
+  }
 
-.buy-btn:hover {
-    background: #C5A059;
-    color: #0A0C10; /* Invert colors for high-contrast action */
-}
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-ghost {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    border-bottom: 0.5px solid var(--text-dim);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .btn-ghost:hover { color: var(--gold); border-color: var(--gold); }
+
+  .hero-line {
+    position: absolute;
+    bottom: 0; left: 2.5rem;
+    width: 0.5px;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 0 2.5rem;
+  }
+
+  /* LINKS SECTION */
+  .section {
+    padding: 5rem 2.5rem;
+  }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  /* PLATFORM LINKS */
+  .links-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .link-row {
+    display: flex;
+    align-items: center;
+    padding: 1.4rem 0;
+    border-bottom: 0.5px solid var(--border-dim);
+    gap: 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .link-row:hover { background: rgba(201,168,76,0.03); }
+
+  .link-row:hover .link-arrow { transform: translateX(4px); color: var(--gold); }
+
+  .link-platform {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    width: 100px;
+    flex-shrink: 0;
+  }
+
+  .link-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    flex: 1;
+    color: var(--text);
+  }
+
+  .link-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border: 0.5px solid var(--border);
+    color: var(--gold-dim);
+  }
+
+  .link-arrow {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  /* STORE */
+  .store-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border-dim);
+    margin-top: 0.5rem;
+  }
+
+  .store-card {
+    background: var(--bg2);
+    padding: 2rem 1.75rem;
+    cursor: pointer;
+    transition: background 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .store-card:hover { background: var(--bg3); }
+
+  .store-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+
+  .store-card:hover::before { transform: scaleX(1); }
+
+  .store-cat {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 1.25rem;
+  }
+
+  .store-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+  }
+
+  .store-desc {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .store-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .store-link::after {
+    content: '→';
+    transition: transform 0.2s;
+  }
+
+  .store-card:hover .store-link::after { transform: translateX(4px); }
+
+  /* QUOTE */
+  .quote-section {
+    padding: 4rem 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .quote-line {
+    width: 1px;
+    height: 80px;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.3rem;
+  }
+
+  blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  blockquote cite {
+    display: block;
+    margin-top: 1rem;
+    font-family: 'Jost', sans-serif;
+    font-style: normal;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 2.5rem;
+    border-top: 0.5px solid var(--border-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  .footer-copy {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
 </style>
 </head>
 <body>
-  <div id="progress-container"><div id="progress-bar"></div></div>
-  <div id="custom-cursor"></div>
-  <div id="conduit-cursor"></div>
-  <div id="tsparticles"></div>
 
-  <div id="main-content" style="opacity: 0; transition: opacity 1.5s ease-in; display: flex; flex-direction: column; align-items: center;">
-    
-    <img src="logo.png" alt="Composed Conquest Logo" class="logo">
-    
-    <h1>Composed Conquest</h1>
-    <p class="tagline">Conquer Everything. Quietly.</p>
-    
-    <div class="divider"></div>
+<nav>
+  <div class="logo">Composed<span>Conquest</span></div>
+  <ul>
+    <li><a href="#">Links</a></li>
+    <li><a href="#">Store</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+</nav>
 
-    <div class="hud-frame">
-        <section>
-            <h2>Connect</h2>
-            <a href="https://www.instagram.com/composedconquest" class="link-card" target="_blank">Instagram</a>
-            <a href="https://www.threads.net/@composedconquest" class="link-card" target="_blank">Threads</a>
-            <a href="https://www.tiktok.com/@composedconquest" class="link-card" target="_blank">TikTok</a>
-        </section>
+<section class="hero">
+  <div class="hero-eyebrow">The discipline to become</div>
+  <h1>Silence is<br><em>strategy.</em></h1>
+  <p class="hero-sub">Faith. Discipline. Intentional living. Built for those who move in silence and arrive with proof.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="#">Explore the Store</a>
+    <a class="btn-ghost" href="#">Follow the Journey</a>
+  </div>
+  <div class="hero-line"></div>
+</section>
 
-        <section class="amazon-section">
-            <h2>The Arsenal</h2>
-            <p style="font-size: 0.9rem; margin-bottom: 15px; opacity: 0.7;">Curated tools for the quiet climb.</p>
-            <a href="https://amzn.to/4uRFYub" class="link-card" target="_blank">Essential Productivity Gear</a>
-        </section>
+<div class="divider"></div>
+
+<section class="section">
+  <div class="section-label">Find us</div>
+  <div class="links-grid">
+    <a class="link-row" href="https://instagram.com/composedconquest" target="_blank">
+      <span class="link-platform">Instagram</span>
+      <span class="link-title">@composedconquest</span>
+      <span class="link-tag">4AM Thoughts</span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a class="link-row" href="https://tiktok.com/@composedconquest" target="_blank">
+      <span class="link-platform">TikTok</span>
+      <span class="link-title">@composedconquest</span>
+      <span class="link-tag">Short-form</span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a class="link-row" href="https://threads.net/@composedconquest" target="_blank">
+      <span class="link-platform">Threads</span>
+      <span class="link-title">@composedconquest</span>
+      <span class="link-tag">Daily Thoughts</span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a class="link-row" href="https://reddit.com/r/composedconquest" target="_blank">
+      <span class="link-platform">Reddit</span>
+      <span class="link-title">r/composedconquest</span>
+      <span class="link-tag">Community</span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="section-label">Curated for the disciplined</div>
+  <div class="store-grid">
+    <div class="store-card">
+      <div class="store-cat">Focus</div>
+      <div class="store-name">The 4AM Kit</div>
+      <div class="store-desc">Everything you need to start before the world wakes up. Handpicked tools for the early riser.</div>
+      <div class="store-link">Shop Now</div>
     </div>
+    <div class="store-card">
+      <div class="store-cat">Discipline</div>
+      <div class="store-name">Stoic Essentials</div>
+      <div class="store-desc">Books, journals, and gear built for those who take their inner world seriously.</div>
+      <div class="store-link">Shop Now</div>
+    </div>
+    <div class="store-card">
+      <div class="store-cat">Faith</div>
+      <div class="store-name">Anchored Reads</div>
+      <div class="store-desc">Curated titles on faith, identity, and building a life with intention and conviction.</div>
+      <div class="store-link">Shop Now</div>
+    </div>
+    <div class="store-card">
+      <div class="store-cat">Body</div>
+      <div class="store-name">Physical Conquest</div>
+      <div class="store-desc">Gear for the ones who treat their body like the mission it is. No vanity — just results.</div>
+      <div class="store-link">Shop Now</div>
+    </div>
+  </div>
+</section>
 
-    <section id="arsenal" style="width: 100%; max-width: 1000px; margin-top: 60px;">
-        <h2 class="glow-text" style="text-align: center;">ACTIVE ARSENAL</h2>
-        <div class="gear-grid">
-            <div class="gear-card">
-                <h3 style="color: #F3E0AD; margin-top: 0; text-transform: uppercase;">Intel: Army FM 21-76 (1957)</h3>
-                <p style="color: #C5A059; font-size: 0.95rem; line-height: 1.5;">The foundation of tactical survival. Historic Department of the Army field manual covering navigation and field-craft.</p>
-                <a href="https://amzn.to/4lT2Yor" target="_blank" class="buy-btn">ACQUIRE ASSET</a>
-            </div>
+<div class="divider"></div>
 
-            <div class="gear-card">
-                <h3 style="color: #F3E0AD; margin-top: 0; text-transform: uppercase;">Intel: SEAL Self-Discipline</h3>
-                <p style="color: #C5A059; font-size: 0.95rem; line-height: 1.5;">Mastering mental toughness and the mindset of the U.S. Navy SEALs. Essential psychological conditioning.</p>
-                <a href="https://amzn.to/40RFXZB" target="_blank" class="buy-btn">ACQUIRE ASSET</a>
-            </div>
+<section class="quote-section">
+  <div class="quote-line"></div>
+  <blockquote>
+    "You have power over your mind — not outside events. Realize this, and you will find strength."
+    <cite>— Marcus Aurelius · Meditations</cite>
+  </blockquote>
+</section>
 
-            <div class="gear-card">
-                <h3 style="color: #F3E0AD; margin-top: 0; text-transform: uppercase;">Field Manual: Discipline = Freedom</h3>
-                <p style="color: #C5A059; font-size: 0.95rem; line-height: 1.5;">Jocko Willink's definitive guide to strategy and tactics. The blueprint for achieving freedom through discipline.</p>
-                <a href="https://amzn.to/4rRQPl1" target="_blank" class="buy-btn">ACQUIRE ASSET</a>
-            </div>
-        </div>
-    </section>
+<footer>
+  <div class="footer-logo">ComposedConquest</div>
+  <div class="footer-copy">Built in the silence. © 2025</div>
+</footer>
 
-    <footer style="text-align: center; padding: 40px 20px; color: rgba(197, 160, 89, 0.6); font-size: 0.8rem; border-top: 1px solid rgba(197, 160, 89, 0.1); margin-top: 50px;">
-        <p>© 2026 COMPOSED CONQUEST | 
-           <a href="privacy.html" style="color: #F3E0AD; text-decoration: none; border-bottom: 1px solid #F3E0AD;">Privacy Policy</a>
-        </p>
-        <p style="font-size: 0.7rem; margin-top: 10px; opacity: 0.8;">
-            As an Amazon Associate, I earn from qualifying purchases.
-        </p>
-    </footer>
-
-
-  <script>
-  
-    // 1. FADE IN ON LOAD
-    window.addEventListener('load', () => {
-      document.getElementById('main-content').style.opacity = '1';
-    });
-
-    // 2. CONDUIT CURSOR LOGIC (New Arrowhead + Glow)
-    const conduitCursor = document.getElementById("conduit-cursor");
-    let absorptionTimer; 
-
-    document.addEventListener("mousemove", (e) => {
-      // Updates the position of your new arrow cursor
-      conduitCursor.style.left = e.clientX + "px";
-      conduitCursor.style.top = e.clientY + "px";
-    });
-
-    document.addEventListener("mousedown", () => {
-      clearTimeout(absorptionTimer);
-      // Starts the "Overcharge" timer (1.5 seconds)
-      absorptionTimer = setTimeout(() => {
-        conduitCursor.classList.add("cursor-overcharge");
-      }, 1500); 
-    });
-
-    document.addEventListener("mouseup", () => {
-      clearTimeout(absorptionTimer);
-      conduitCursor.classList.remove("cursor-overcharge");
-    });
-
-    // 3. TSPARTICLES CONFIG (Keep your existing floating particles)
-    tsParticles.load("tsparticles", {
-      particles: {
-        number: { value: 80, density: { enable: true, area: 800 } },
-        color: { value: "#F3E0AD" },
-        shape: { type: "circle" },
-        opacity: { value: { min: 0.1, max: 0.6 } },
-        size: { value: { min: 1, max: 3 } },
-        move: {
-          enable: true,
-          speed: 1.5,
-          direction: "none",
-          random: true,
-          outModes: { default: "out" }
-        },
-        links: {
-          enable: true,
-          distance: 100,
-          color: "#C5A059",
-          opacity: 0.2,
-          width: 1
-        }
-      },
-      interactivity: {
-        events: {
-          onHover: { enable: true, mode: "grab" },
-          onClick: { enable: true, mode: "push" } 
-        },
-        modes: {
-          grab: { distance: 200, links: { opacity: 0.5 } },
-          push: { quantity: 10 }
-        }
-      }
-    });
-
-    // 4. PROGRESS BAR LOGIC
-    window.onscroll = function() {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      document.getElementById("progress-bar").style.width = scrolled + "%";
-    };
-  
-  </script>
 </body>
 </html>
