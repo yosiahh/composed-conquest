@@ -6,6 +6,10 @@
 <title>ComposedConquest</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -233,7 +237,6 @@
   }
 
   .link-row:hover { background: rgba(201,168,76,0.03); }
-
   .link-row:hover .link-arrow { transform: translateX(4px); color: var(--gold); }
 
   .link-platform {
@@ -341,6 +344,96 @@
 
   .store-card:hover .store-link::after { transform: translateX(4px); }
 
+  /* SHOWCASE AREA STYLES */
+  .showcase-area {
+    display: none; 
+    margin-top: 1px;
+    padding: 4rem 2.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border-dim);
+    animation: slideDown 0.4s ease forwards;
+  }
+
+  .showcase-area.active {
+    display: block;
+  }
+
+  .store-card.active-card {
+    background: var(--bg3);
+  }
+
+  .store-card.active-card::before {
+    transform: scaleX(1);
+    background: var(--gold);
+  }
+
+  /* NEW PRODUCT GRID INSIDE SHOWCASE */
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .product-item {
+    background: var(--bg3);
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--border-dim);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s;
+  }
+
+  .product-item:hover {
+    border-color: var(--gold-glow);
+  }
+
+  .product-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .product-item p {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+  }
+
+  .product-item a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.3s;
+  }
+
+  .product-item a::after {
+    content: '→';
+    transition: transform 0.2s;
+  }
+
+  .product-item a:hover {
+    opacity: 0.8;
+  }
+  
+  .product-item a:hover::after {
+    transform: translateX(4px);
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* QUOTE */
   .quote-section {
     padding: 4rem 2.5rem;
@@ -401,6 +494,7 @@
     font-size: 0.65rem;
     letter-spacing: 0.1em;
     color: var(--text-dim);
+    line-height: 1.6;
   }
 </style>
 </head>
@@ -409,8 +503,8 @@
 <nav>
   <div class="logo">Composed<span>Conquest</span></div>
   <ul>
-    <li><a href="#">Links</a></li>
-    <li><a href="#">Store</a></li>
+    <li><a href="#links-section">Links</a></li>
+    <li><a href="#curated-section">Store</a></li>
     <li><a href="#">About</a></li>
   </ul>
 </nav>
@@ -420,36 +514,36 @@
   <h1>Silence is<br><em>strategy.</em></h1>
   <p class="hero-sub">Faith. Discipline. Intentional living. Built for those who move in silence and arrive with proof.</p>
   <div class="hero-cta">
-    <a class="btn-primary" href="#">Explore the Store</a>
-    <a class="btn-ghost" href="#">Follow the Journey</a>
+    <a class="btn-primary" href="#curated-section">Explore the Store</a>
+    <a class="btn-ghost" href="#links-section">Follow the Journey</a>
   </div>
   <div class="hero-line"></div>
 </section>
 
 <div class="divider"></div>
 
-<section class="section">
+<section class="section" id="links-section">
   <div class="section-label">Find us</div>
   <div class="links-grid">
-    <a class="link-row" href="https://instagram.com/composedconquest" target="_blank">
+    <a class="link-row" href="https://instagram.com/composedconquest" target="_blank" rel="noopener noreferrer">
       <span class="link-platform">Instagram</span>
       <span class="link-title">@composedconquest</span>
       <span class="link-tag">4AM Thoughts</span>
       <span class="link-arrow">→</span>
     </a>
-    <a class="link-row" href="https://tiktok.com/@composedconquest" target="_blank">
+    <a class="link-row" href="https://tiktok.com/@composedconquest" target="_blank" rel="noopener noreferrer">
       <span class="link-platform">TikTok</span>
       <span class="link-title">@composedconquest</span>
       <span class="link-tag">Short-form</span>
       <span class="link-arrow">→</span>
     </a>
-    <a class="link-row" href="https://threads.net/@composedconquest" target="_blank">
+    <a class="link-row" href="https://threads.net/@composedconquest" target="_blank" rel="noopener noreferrer">
       <span class="link-platform">Threads</span>
       <span class="link-title">@composedconquest</span>
       <span class="link-tag">Daily Thoughts</span>
       <span class="link-arrow">→</span>
     </a>
-    <a class="link-row" href="https://reddit.com/r/composedconquest" target="_blank">
+    <a class="link-row" href="https://reddit.com/r/composedconquest" target="_blank" rel="noopener noreferrer">
       <span class="link-platform">Reddit</span>
       <span class="link-title">r/composedconquest</span>
       <span class="link-tag">Community</span>
@@ -460,33 +554,35 @@
 
 <div class="divider"></div>
 
-<section class="section">
+<section class="section" id="curated-section">
   <div class="section-label">Curated for the disciplined</div>
-  <div class="store-grid">
-    <div class="store-card">
+  
+  <div class="store-grid" id="store-grid">
+    <div class="store-card" data-index="0">
       <div class="store-cat">Focus</div>
       <div class="store-name">The 4AM Kit</div>
-      <div class="store-desc">Everything you need to start before the world wakes up. Handpicked tools for the early riser.</div>
-      <div class="store-link">Shop Now</div>
+      <div class="store-link">View Details</div>
     </div>
-    <div class="store-card">
+    <div class="store-card" data-index="1">
       <div class="store-cat">Discipline</div>
       <div class="store-name">Stoic Essentials</div>
-      <div class="store-desc">Books, journals, and gear built for those who take their inner world seriously.</div>
-      <div class="store-link">Shop Now</div>
+      <div class="store-link">View Details</div>
     </div>
-    <div class="store-card">
+    <div class="store-card" data-index="2">
       <div class="store-cat">Faith</div>
       <div class="store-name">Anchored Reads</div>
-      <div class="store-desc">Curated titles on faith, identity, and building a life with intention and conviction.</div>
-      <div class="store-link">Shop Now</div>
+      <div class="store-link">View Details</div>
     </div>
-    <div class="store-card">
+    <div class="store-card" data-index="3">
       <div class="store-cat">Body</div>
       <div class="store-name">Physical Conquest</div>
-      <div class="store-desc">Gear for the ones who treat their body like the mission it is. No vanity — just results.</div>
-      <div class="store-link">Shop Now</div>
+      <div class="store-link">View Details</div>
     </div>
+  </div>
+
+  <div id="showcase-area" class="showcase-area">
+    <div id="showcase-content">
+       </div>
   </div>
 </section>
 
@@ -502,8 +598,125 @@
 
 <footer>
   <div class="footer-logo">ComposedConquest</div>
-  <div class="footer-copy">Built in the silence. © 2025</div>
+  <div class="footer-copy" style="text-align: right;">
+    Built in the silence. © 2026<br><br>
+    <em>As an Amazon Associate, I earn from qualifying purchases.</em><br><br>
+    <a href="privacy.html" style="color: var(--gold-dim); transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'">Privacy Policy</a>
+  </div>
 </footer>
+
+<script>
+  // 1. Upgraded Data Structure to handle multiple items per category
+  const categories = {
+    0: {
+      catName: "Focus",
+      title: "The 4AM Kit",
+      desc: "Everything you need to start before the world wakes up.",
+      items: [
+        { name: "Philips SmartSleep Wake-up Light", desc: "Simulated sunrise and sunset for natural, jarring-free wakeups. Includes 5 natural sounds and a reading lamp.", link: "https://amzn.to/4c1loPx" },
+        { name: "Sony WH-1000XM5 Headphones", desc: "Premium noise cancellation with Auto NC Optimizer and 30-hour battery. Drop into deep work immediately.", link: "https://amzn.to/4bY3ZY3" },
+        { name: "PAPERAGE Lined Journal Notebook", desc: "Medium 160-page hardcover journal with 100 GSM thick paper for unhindered note-taking and strategy planning.", link: "https://amzn.to/4c1lxT5" },
+        { name: "ESPRO P3 French Press", desc: "Patented double micro-filter for a grit-free brew. Heat-resistant thicker borosilicate glass. A quiet, deliberate morning ritual.", link: "https://amzn.to/416xLEV" },
+        { name: "Digital Visual Pomodoro Timer", desc: "Magnetic countdown timer with a large LED display and 3 preset times. Ideal for maintaining strict deep work blocks.", link: "https://amzn.to/4dk9Uci" }
+      ]
+    },
+    1: {
+      catName: "Discipline",
+      title: "Stoic Essentials",
+      desc: "Books, journals, and gear built for those who take their inner world seriously.",
+      items: [
+        { name: "Meditations", desc: "The foundational text by Marcus Aurelius for mastering your inner citadel.", link: "https://amzn.to/3NWdbnJ" },
+        { name: "Discipline Equals Freedom", desc: "Jocko Willink's field manual for building a life of ultimate capability and resilience.", link: "https://amzn.to/4tmqX27" },
+        { name: "MAG-FANCY Dry Erase Calendar", desc: "Magnetic weekly schedule planning board. Map out your objectives and execute them.", link: "https://amzn.to/4tfYKts" },
+        { name: "The Daily Stoic", desc: "366 Meditations on wisdom, perseverance, and the art of living by Ryan Holiday.", link: "https://amzn.to/47wcloe" },
+        { name: "Atomic Habits", desc: "An easy and proven way to build good habits and break bad ones by James Clear.", link: "https://amzn.to/4tkm1ut" }
+      ]
+    },
+    2: {
+      catName: "Faith",
+      title: "Apostolic Anchors",
+      desc: "Curated titles on Oneness doctrine, Acts 2:38 salvation, and building a life of unshakeable holiness.",
+      items: [
+        { name: "The Oneness of God", desc: "Dr. David K. Bernard's definitive theological exposition of the indivisible, absolute oneness of God. The foundation of Apostolic doctrine.", link: "https://amzn.to/4tfNAVH" },
+        { name: "The New Birth", desc: "A comprehensive, scriptural breakdown of repentance, water baptism in Jesus' name, and the infilling of the Holy Ghost.", link: "https://amzn.to/47yPetd" },
+        { name: "In Search of Holiness", desc: "A practical, biblical exploration of living a separated, disciplined, and intentional life in a modern world.", link: "https://amzn.to/4thxNFS" },
+        { name: "Giant Print Premium Leather KJV Bible", desc: "The uncompromised Word. Bound in premium full grain leather, built to withstand daily, rigorous study.", link: "https://amzn.to/4sSkuMn" },
+        { name: "Black Leather-Look KJV Bible", desc: "A sleek, minimalist edition of the King James Version. Perfect for gifting or carrying daily.", link: "https://amzn.to/4sJpVxe" }
+      ]
+    },
+    3: {
+      catName: "Body",
+      title: "Physical Conquest",
+      desc: "Gear for the ones who treat their body like the mission it is. No vanity — just results.",
+      items: [
+        { name: "Sperax Under-Desk Treadmill Pad", desc: "3-in-1 design. 400W low-noise walking vibration pad with remote and app control.", link: "https://amzn.to/4bFKW5Q" },
+        { name: "ZELUS Weighted Vest", desc: "Adjustable weight training vest (6lb-30lb) with reflective striping for maximum resistance.", link: "https://amzn.to/4bHlpJx" },
+        { name: "Jogwell Auto-Incline Walking Pad", desc: "350lb capacity treadmill featuring up to 20% incline and convenient vertical storage.", link: "https://amzn.to/416wyxn" },
+        { name: "Etekcity Smart Body Scale", desc: "Bluetooth digital scale tracking BMI, body fat, and muscle mass syncing directly to your phone.", link: "https://amzn.to/4dTeTAL" },
+        { name: "WHOOP 5.0 Activity Tracker", desc: "24/7 fitness and sleep wearable featuring personalized physiological coaching. 14+ day battery life.", link: "https://amzn.to/4bV5FRN" },
+        { name: "Rapid Speed Jump Rope", desc: "Tangle-free, adjustable steel cable with ball bearings for high-intensity, fluid cardio.", link: "https://amzn.to/4s2ZH7q" },
+        { name: "Bigger Leaner Stronger", desc: "The simple science of building the ultimate male body by Michael Matthews.", link: "https://amzn.to/41C8sKW" },
+        { name: "VELOMIX Protein Shaker (2-Pack)", desc: "28oz leak-proof shaker cups equipped with wire whisks for seamless mixing.", link: "https://amzn.to/41EepXQ" },
+        { name: "The Obesity Code", desc: "Unlocking the secrets of weight loss and the science of intermittent fasting by Dr. Jason Fung.", link: "https://amzn.to/4thw1oc" }
+      ]
+    }
+  };
+
+  // 2. Select the DOM elements
+  const cards = document.querySelectorAll('.store-card');
+  const showcase = document.getElementById('showcase-area');
+  const showcaseContent = document.getElementById('showcase-content');
+
+  // 3. Add click functionality
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const index = card.getAttribute('data-index');
+      const data = categories[index];
+      
+      // Remove active state from all cards
+      cards.forEach(c => c.classList.remove('active-card'));
+      
+      // Add active state to clicked card
+      card.classList.add('active-card');
+      
+      // Build the HTML for the showcase area
+      let html = `
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+          <div class="store-cat" style="margin-bottom: 0.5rem;">${data.catName}</div>
+          <h2 class="store-name" style="font-size: 2.5rem; margin-bottom: 1rem;">${data.title}</h2>
+          <p class="store-desc" style="font-size: 0.9rem;">${data.desc}</p>
+        </div>
+        <div class="product-list">
+      `;
+
+      // Loop through the items and create a card for each
+      data.items.forEach(item => {
+        html += `
+          <div class="product-item">
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+            <a href="${item.link}" target="_blank" rel="noopener noreferrer">View on Amazon</a>
+          </div>
+        `;
+      });
+
+      html += `</div>`; // Close product-list
+
+      // Inject the HTML
+      showcaseContent.innerHTML = html;
+
+      // Reveal the showcase area
+      if (!showcase.classList.contains('active')) {
+        showcase.classList.add('active');
+      }
+
+      // Smoothly scroll down
+      setTimeout(() => {
+        showcase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    });
+  });
+</script>
 
 </body>
 </html>
