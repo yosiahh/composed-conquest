@@ -496,6 +496,61 @@
     color: var(--text-dim);
     line-height: 1.6;
   }
+
+  /* ----------------------------------------- */
+  /* MOBILE OPTIMIZATION MEDIA QUERIES         */
+  /* ----------------------------------------- */
+  @media (max-width: 768px) {
+    /* Adjust Global Padding */
+    .hero { padding: 8rem 1.25rem 4rem; }
+    .section { padding: 4rem 1.25rem; }
+    .divider { margin: 0 1.25rem; }
+    
+    /* Center and Stack Navigation */
+    nav { 
+      flex-direction: column; 
+      padding: 1.25rem; 
+      gap: 1rem; 
+    }
+    nav ul { gap: 1.5rem; }
+    
+    /* Adjust Hero alignment */
+    .hero-line { left: 1.25rem; }
+
+    /* Hide the decorative platform name on Links to save space */
+    .link-platform { display: none; }
+    .link-row { padding: 1.2rem 0; }
+    
+    /* Stack Store Grids */
+    .store-grid { grid-template-columns: 1fr; }
+    
+    /* Adjust Showcase Area */
+    .showcase-area { padding: 3rem 1.25rem; }
+    .product-list { grid-template-columns: 1fr; margin-top: 2rem; }
+    .product-item { padding: 1.5rem; }
+
+    /* Stack and Center Quote */
+    .quote-section { 
+      padding: 4rem 1.25rem; 
+      flex-direction: column; 
+      gap: 1.5rem; 
+    }
+    .quote-line { 
+      width: 60px; 
+      height: 1px; 
+      margin-top: 0; 
+    }
+    blockquote { font-size: 1.3rem; }
+
+    /* Stack and Center Footer */
+    footer { 
+      padding: 3rem 1.25rem; 
+      flex-direction: column; 
+      text-align: center; 
+      gap: 1.5rem; 
+    }
+    .footer-copy { text-align: center !important; }
+  }
 </style>
 </head>
 <body>
